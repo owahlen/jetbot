@@ -1,20 +1,57 @@
 # JetBot
 
-<!--[<img src="https://img.shields.io/discord/553852754058280961.svg">](https://discord.gg/Ady6NtF) -->
+This fork of the original [JetBot repo](https://github.com/NVIDIA-AI-IOT/jetbot)
+provides instructions on how to set up JetBot on a blank SD card.
+It is based on information from the [JetBot Wiki](https://github.com/NVIDIA-AI-IOT/jetbot/wiki)
+and includes changes from the [waveshare jetbot](https://github.com/waveshare/jetbot) fork.
 
-> Looking for a quick way to get started with JetBot?  Many third party kits are [now available](../../wiki/third-party-kits)!
+## 1. Write Image to microSD Card
+The JetBot software will be installed on top of the
+[Jetson Nano Developer Kit](https://developer.nvidia.com/embedded/learn/get-started-jetson-nano-devkit#write).
+Download the [SD card image](https://developer.nvidia.com/jetson-nano-sd-card-image) and
+write it onto the microSD card using [etcher](https://www.balena.io/etcher/).
+Alternatively start the download with the following command:
+```
+wget https://developer.download.nvidia.com/embedded/L4T/r32_Release_v4.2/nv-jetson-nano-sd-card-image-r32.4.2.zip
+```
 
-<img src="../..//wiki/images/jetson-jetbot-illustration_1600x1260.png" height="256">
+## 2. Basic Setup of Jetson 
+Plug the microSD card into the Jetson board in addition to keyboard, mouse, monitor and boot.
+Read the instructions on
+[Setup and First Boot](https://developer.nvidia.com/embedded/learn/get-started-jetson-nano-devkit#setup)
+and
+[Create-SD-Card-Image-From-Scratch](https://github.com/NVIDIA-AI-IOT/jetbot/wiki/Create-SD-Card-Image-From-Scratch)
+on the Jetson wiki page.
 
-JetBot is an open-source robot based on NVIDIA Jetson Nano that is
+In summary:
+* Accept NVIDIA Jetson software EULA
+* Select system language, keyboard layout, WiFi, and time zone
+* Use `jetbot` as username, password, and computer name also select the checkbox to login automatically
+* Leave APP partition size on its default value
+* Reboot and click through gnome-initial-setup without changing anything
+* Find out the IP address of the device with the command: `hostname -I | awk '{print $1}'`
+* The jetbot should now be reachable via `ssh` from the host and all peripherals can be disconnected 
 
-* **Affordable** - Less than $150 add-on to Jetson Nano
-* **Educational** - Tutorials from basic motion to AI based collision avoidance
-* **Fun!** - Interactively programmed from your web browser
+## 3. Setup of Software
+Copy the setup script from the host to the jetbot and login onto the board:
+```
+scp scripts/create-sdcard-image-from-scratch.sh jetbot@<ip address of jetbot>:
+ssh jetbot@<ip address of jetbot>
+```
 
-Building and using JetBot gives the hands on experience needed to create entirely new AI projects.
+Upgrade the system and run the setup script:
+```
+sudo apt-get update
+sudo apt-get upgrade -y
+sudo bash create-sdcard-image-from-scratch.sh
+```
 
-To get started, read the [JetBot Wiki](https://github.com/NVIDIA-AI-IOT/jetbot/wiki).
-
-
-[![Analytics](https://ga-beacon.appspot.com/UA-135919510-1/jetbot/README?pixel)](https://github.com/igrigorik/ga-beacon)
+## 4. Configure Power Mode
+On the jetbot select 5W power mode
+```
+sudo nvpmodel -m1
+```
+Verify the correct power mode setting
+```
+sudo nvpmodel -q
+```
