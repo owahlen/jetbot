@@ -22,8 +22,8 @@ class ObjectDetector(object):
     
     def __init__(self, engine_path, preprocess_fn=bgr8_to_ssd_input):
         logger = trt.Logger()
-        trt.init_libnvinfer_plugins(logger, '')
         load_plugins()
+        trt.init_libnvinfer_plugins(logger, '')
         self.trt_model = TRTModel(engine_path, input_names=[TRT_INPUT_NAME],
                                   output_names=[TRT_OUTPUT_NAME, TRT_OUTPUT_NAME + '_1'])
         self.preprocess_fn = preprocess_fn
