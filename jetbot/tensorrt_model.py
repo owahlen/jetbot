@@ -133,7 +133,7 @@ class TRTModel(object):
         return self.execute(*inputs)
 
     def destroy(self):
-        self.runtime.destroy()
-        self.logger.destroy()
-        self.engine.destroy()
-        self.context.destroy()
+        self.runtime.__del__()
+        self.context.__del__()
+        self.engine.__del__()
+        del self.logger
