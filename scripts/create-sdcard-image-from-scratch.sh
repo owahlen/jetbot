@@ -19,7 +19,8 @@ sudo apt-get update
 sudo apt-get install -y libhdf5-serial-dev hdf5-tools libhdf5-dev zlib1g-dev zip libjpeg8-dev liblapack-dev libblas-dev gfortran
 sudo pip3 install -U pip testresources setuptools
 sudo pip3 install -U numpy==1.16.1 future==0.17.1 mock==3.0.5 h5py==2.9.0 keras_preprocessing==1.0.5 keras_applications==1.0.8 gast==0.2.2 futures protobuf pybind11
-sudo pip3 install --pre --extra-index-url https://developer.download.nvidia.com/compute/redist/jp/v44 'tensorflow<2'
+#sudo pip3 install --pre --extra-index-url https://developer.download.nvidia.com/compute/redist/jp/v44 'tensorflow<2'
+sudo pip3 install --pre --extra-index-url https://developer.download.nvidia.com/compute/redist/jp/v44 tensorflow
 
 # Install the pre-built PyTorch pip wheel
 sudo apt-get install -y libopenblas-base libopenmpi-dev
@@ -79,3 +80,9 @@ sudo bash -c 'echo "/var/swapfile swap swap defaults 0 0" >> /etc/fstab'
 # Copy JetBot notebooks to home directory
 cp -r ~/jetbot/notebooks ~/Notebooks
 
+# Install fan-daemon if you have a PWM fan connected to the Jetson
+cd
+git clone https://github.com/kooscode/fan-daemon.git
+cd fan-daemon
+make
+sudo bash -c './install.sh'
