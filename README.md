@@ -15,7 +15,7 @@ Download the [SD card image](https://developer.nvidia.com/jetson-nano-sd-card-im
 write it onto the microSD card using [etcher](https://www.balena.io/etcher/).
 Alternatively start the download with the following command:
 ```
-wget https://developer.download.nvidia.com/embedded/L4T/r32_Release_v4.2/nv-jetson-nano-sd-card-image-r32.4.2.zip
+wget https://developer.nvidia.com/jetson-nano-sd-card-image -O jetson-nano-developer-kit-sd-card-image.zip
 ```
 
 ## 2. Basic Setup of Jetson 

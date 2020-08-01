@@ -22,20 +22,19 @@ sudo pip3 install -U numpy==1.16.1 future==0.17.1 mock==3.0.5 h5py==2.9.0 keras_
 #sudo pip3 install --pre --extra-index-url https://developer.download.nvidia.com/compute/redist/jp/v44 'tensorflow<2'
 sudo pip3 install --pre --extra-index-url https://developer.download.nvidia.com/compute/redist/jp/v44 tensorflow
 
-# Install the pre-built PyTorch pip wheel
+# Install the pre-built PyTorch pip wheel (see https://forums.developer.nvidia.com/t/pytorch-for-jetson-nano-version-1-5-0-now-available/72048)
 sudo apt-get install -y libopenblas-base libopenmpi-dev
-wget https://nvidia.box.com/shared/static/3ibazbiwtkl181n95n9em3wtrca7tdzp.whl -O torch-1.5.0-cp36-cp36m-linux_aarch64.whl
+wget https://nvidia.box.com/shared/static/9eptse6jyly1ggt9axbja2yrmj6pbarc.whl -O torch-1.6.0-cp36-cp36m-linux_aarch64.whl
 sudo pip3 install Cython
-sudo pip3 install torch-1.5.0-cp36-cp36m-linux_aarch64.whl
-rm torch-1.5.0-cp36-cp36m-linux_aarch64.whl
+sudo pip3 install torch-1.6.0-cp36-cp36m-linux_aarch64.whl
+rm torch-1.6.0-cp36-cp36m-linux_aarch64.whl
 
-# Install torchvision package
-git clone https://github.com/pytorch/vision
-cd vision
-git checkout v0.6.0
+# Install torchvision package (see https://forums.developer.nvidia.com/t/pytorch-for-jetson-nano-version-1-5-0-now-available/72048)
+git clone --branch v0.7.0 https://github.com/pytorch/vision torchvision
+cd torchvision
 sudo python3 setup.py install
 cd
-rm -rf vision
+rm -rf torchvision
 
 # Install traitlets (master, to support the unlink() method)
 sudo python3 -m pip install git+https://github.com/ipython/traitlets@master
