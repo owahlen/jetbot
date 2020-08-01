@@ -70,7 +70,7 @@ sudo systemctl start jetbot_jupyter
 
 # Make swapfile
 cd 
-sudo fallocate -l 4G /var/swapfile
+sudo fallocate -l 8G /var/swapfile
 sudo chmod 600 /var/swapfile
 sudo mkswap /var/swapfile
 sudo swapon /var/swapfile
