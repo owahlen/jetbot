@@ -1,9 +1,9 @@
-import tensorrt as trt
-from jetbot.ssd_tensorrt import load_plugins, parse_boxes, TRT_INPUT_NAME, TRT_OUTPUT_NAME
-from .tensorrt_model import TRTModel
-import numpy as np
 import cv2
+import numpy as np
+import tensorrt as trt
 
+from jetbot.ssd_tensorrt import parse_boxes
+from .tensorrt_model import TRTModel
 
 mean = 255.0 * np.array([0.5, 0.5, 0.5])
 stdev = 255.0 * np.array([0.5, 0.5, 0.5])
@@ -19,18 +19,16 @@ def bgr8_to_ssd_input(camera_value):
 
 
 class ObjectDetector(object):
-    
+
     def __init__(self, engine_path, preprocess_fn=bgr8_to_ssd_input):
-        logger = trt.Logger()
-        load_plugins()
+        logger = trt.Logger(trt.Logger.INFO)
         trt.init_libnvinfer_plugins(logger, '')
-        self.trt_model = TRTModel(engine_path, input_names=[TRT_INPUT_NAME],
-                                  output_names=[TRT_OUTPUT_NAME, TRT_OUTPUT_NAME + '_1'])
+        self.trt_model = TRTModel(engine_path)
         self.preprocess_fn = preprocess_fn
-        
+
     def execute(self, *inputs):
         trt_outputs = self.trt_model(self.preprocess_fn(*inputs))
         return parse_boxes(trt_outputs)
-    
+
     def __call__(self, *inputs):
         return self.execute(*inputs)

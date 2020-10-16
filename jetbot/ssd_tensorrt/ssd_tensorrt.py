@@ -18,21 +18,22 @@ Y1_IDX = 6
 
 
 def parse_boxes(outputs):
+    # bboxes are in the NMS output at index 0 of the network
     bboxes = outputs[0]
-            
+
     # iterate through each image index
     all_detections = []
     for i in range(bboxes.shape[0]):
 
         detections = []
         # iterate through each bounding box
-        for j in range(bboxes.shape[2]):
+        for j in range(bboxes.shape[1]):
 
-            bbox = bboxes[i][0][j]
+            bbox = bboxes[i][j]
             label = bbox[LABEL_IDX]
 
             # last detection if < 0
-            if label < 0: 
+            if label < 0:
                 break
 
             detections.append(dict(
@@ -151,7 +152,7 @@ def ssd_pipeline_to_uff(checkpoint_path, config_path,
         ],
         featureMapShapes=_get_feature_map_shape(config),
         numLayers=config.model.ssd.anchor_generator.ssd_anchor_generator.
-        num_layers)
+            num_layers)
 
     # create nms plugin
     nms_config = config.model.ssd.post_processing.batch_non_max_suppression
@@ -226,7 +227,7 @@ def ssd_uff_to_engine(uff_buffer,
 
     # create the tensorrt engine
     with trt.Logger(log_level) as logger, trt.Builder(logger) as builder, \
-        builder.create_network() as network, trt.UffParser() as parser:
+            builder.create_network() as network, trt.UffParser() as parser:
 
         # init built in plugins
         trt.init_libnvinfer_plugins(logger, '')
